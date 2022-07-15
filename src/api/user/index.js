@@ -66,3 +66,24 @@ export const edituser = ({ id, email, mobile }) => {
     }
   })
 }
+// 删除用户
+export const deleuser = ({ id }) => {
+  return request({
+    method: 'DELETE',
+    url: `users/${id}`,
+    data: {
+      id
+    }
+  })
+}
+// 设置用户
+export const setuser = ({ id, rid }) => {
+  return request({
+    method: 'PUT',
+    url: `users/${id}/role`,
+    data: {
+      id,
+      rid
+    }
+  })
+}

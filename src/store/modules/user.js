@@ -17,6 +17,8 @@ const actions = {
       if (res.data.data != null) {
         context.commit('settoken', res.data.data.token)
         router.push('/home')
+        console.log(res)
+        Message.success(res.data.meta.msg)
       } else {
         Message.error(res.data.meta.msg) // 引入了element-ui 直接使用 提示出接口返回信息（this只存在组件 所以直接按需引入）
         // throw new Error(res.data.meta.msg)

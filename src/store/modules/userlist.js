@@ -1,4 +1,4 @@
-import { UserList, adduser, Changestatus, edituser } from '@/api/user'
+import { UserList, adduser, Changestatus, edituser, deleuser, setuser } from '@/api/user'
 import { Message } from 'element-ui'
 
 const state = {
@@ -56,6 +56,34 @@ const actions = {
     try {
       const res = await edituser(data)
       console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // 删除
+  async deleuser (context, data) {
+    try {
+      const res = await deleuser(data)
+      console.log(res)
+      if (res.data.meta.status === 200) {
+        Message.success('删除成功')
+      } else {
+        Message.error('删除失败')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // 设置
+  async setuser (context, data) {
+    try {
+      const res = await setuser(data)
+      console.log(res)
+      if (res.data.data === null) {
+        Message.error(res.data.meta.msg)
+      } else {
+        Message.error(res.data.meta.msg)
+      }
     } catch (error) {
       console.log(error)
     }

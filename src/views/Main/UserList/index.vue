@@ -85,16 +85,45 @@
                 v-model="scope.row.mg_state"
                 @click="change(scope.row.id)"
               ></el-button>
-              <el-button type="danger" icon="el-icon-delete-solid"></el-button>
-              <el-button type="warning" icon="el-icon-s-tools"></el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete-solid"
+                @click="open(scope.row.id)"
+              ></el-button>
+              <el-button
+                type="warning"
+                icon="el-icon-s-tools"
+                @click="setroles(scope.row.id)"
+              ></el-button>
             </div>
           </template>
         </el-table-column>
       </el-table>
+      <!-- 设置对话框 -->
+      <el-dialog title="提示" :visible.sync="setuser" width="30%">
+        <p>当前用户：{{ nowuser }}</p>
+        <p>当前的角色：{{ nowrole }}</p>
+        <div class="block">
+          <span>分配新角色：</span>
+          <el-select v-model="rolevalue" placeholder="请选择" value-key>
+            <el-option
+              v-for="item in rolelist"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.roleName"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="setuser = false">取 消</el-button>
+          <el-button type="primary" @click="role">确 定</el-button>
+        </span>
+      </el-dialog>
 
       <!-- 编辑用户 -->
-      <el-dialog title="编辑用户" :visible.sync="bianji" ref="form2">
-        <el-form :model="form2" :rules="rules2">
+      <el-dialog title="编辑用户" :visible.sync="bianji">
+        <el-form :model="form2" :rules="rules2" ref="form2">
           <el-form-item
             label="用户名"
             prop="name"
@@ -173,7 +202,12 @@ export default {
       currentPage: 1,
       gridData: [],
       dialogFormVisible: false, // 添加对话框显示隐藏
-      bianji: false,
+      bianji: false, // 编辑对话框
+      setuser: false,
+      rolelist: [], // 选泽数据
+      rolevalue: '', // 确定选择
+      nowuser: '', // 当前用户
+      nowrole: '',
       // 添加用户
       form: {
         name: '',
@@ -241,6 +275,7 @@ export default {
     },
     async loginFn () {
       try {
+        await this.$refs.form.validate()
         try {
           this.$store.dispatch('userlist/adduser', {
             username: this.form.name,
@@ -300,6 +335,43 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    open (id) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        try {
+          this.$store.dispatch('userlist/deleuser', { id: id })
+        } catch (error) {
+          console.log(error)
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 设置点击
+    setroles (id) {
+      this.setuser = true
+      this.$store.dispatch('Roles/getRoles')
+      // console.log(this.$store.getters.RoleList) //角色列表
+      this.rolelist = this.$store.getters.RoleList
+      console.log(this.$store.getters.RoleList)
+      this.nowuser = this.tableData.filter(item => item.id === id)[0].username
+      this.nowrole = this.tableData.filter(item => item.id === id)[0].role_name
+    },
+    // 设置请求
+    role () {
+      if (this.rolevalue === '') {
+        return this.$message.error('你二臂啊，必选项！')
+      }
+      const id = this.tableData.filter(item => item.username === this.nowuser)[0].id
+      const rid = this.rolelist.filter(item => item.roleName === this.rolevalue)[0].id
+      this.$store.dispatch('userlist/setuser', { id: id, rid: rid })
     }
   },
   computed: {},

@@ -2,11 +2,11 @@
   <el-container class="container">
     <el-header>
       <img
-        src="@/assets/src=http___file.moyublog.com_d_file_2021-01-17_5b8123effc732a8d5be66e1c5835c1d0.jpg&refer=http___file.moyublog.webp"
+        src="../../assets/5e3dadb93842c6d08b6497d2cb4c78c2 (1).png"
         alt=""
-        style="width: 100px; height: 60px; marginTop=10px"
+        style="width: 80px; height: 55px"
       />
-      登录后台管理系统
+      &nbsp; 登录后台管理系统
       <el-button class="btn">退出</el-button>
     </el-header>
     <el-container>
@@ -42,8 +42,28 @@
             <i class="el-icon-menu"></i
             ><span slot="title">权限管理</span></template
           >
-          <el-menu-item index="2-1">角色列表</el-menu-item>
-          <el-menu-item index="2-2">权限列表</el-menu-item>
+          <el-menu-item
+            index="2-1"
+            @click="
+              $router.push(
+                { path: '/rolelist' },
+                (onComplete) => {},
+                (onAbort) => {}
+              )
+            "
+            >角色列表</el-menu-item
+          >
+          <el-menu-item
+            index="2-2"
+            @click="
+              $router.push(
+                { path: '/permissionlist' },
+                (onComplete) => {},
+                (onAbort) => {}
+              )
+            "
+            >权限列表</el-menu-item
+          >
         </el-submenu>
         <el-submenu index="3">
           <template #title
@@ -100,22 +120,23 @@ export default {
 .container {
   height: 100vh;
   .el-header {
-    background-color: #111111;
+    background-color: #0d043d;
     color: #fff;
     font-size: 22px;
+    border-bottom: 5px solid rgb(11, 220, 189);
     .btn {
       margin-top: 10px;
       float: right;
     }
   }
   .el-aside {
-    background-color: #111111;
+    background-color: #0d0d0d;
   }
   .el-main {
-    background-color: #eaedf1;
+    background-color: #ebeaf1;
   }
   .daohang {
-    background-color: rgba(70, 19, 158, 0.794);
+    background-color: #0d043d;
     text-align: center;
     line-height: 40px;
     border: none;

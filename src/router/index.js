@@ -16,7 +16,8 @@ const routes = [
         children: [
           { path: '/first', component: () => import('@/views/Main/First') },
           { path: '/userlist', component: () => import('@/views/Main/UserList') },
-          { path: '/rolelist', component: () => import('@/views/Main/Privilege/RoleList') }
+          { path: '/rolelist', component: () => import('@/views/Main/Privilege/RoleList') },
+          { path: '/permissionlist', component: () => import('@/views/Main/Privilege/PermissionList') }
         ]
       }
     ]
