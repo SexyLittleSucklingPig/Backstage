@@ -71,19 +71,20 @@ export default {
 .main {
   width: 100vw;
   height: 100vh;
-  background-color: #2b4b6b;
+  background-color: #02172c;
   display: flex;
   justify-content: center;
   align-items: center;
   .form-box {
     width: 450px;
     height: 240px;
-    background-color: #fff;
-    padding: 30px 15px;
+    background-color: rgb(255, 255, 255);
+    padding: 40px 15px;
     box-sizing: border-box;
     .btn-item {
       text-align: right;
     }
+    border-radius: 15px;
   }
 }
 </style>

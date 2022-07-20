@@ -1,10 +1,12 @@
 <template>
   <div class="main">
+    <!-- 面包屑 -->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
+    <!-- 添加搜索用户 -->
     <div class="formlist">
       <el-row :gutter="10">
         <el-col :span="6">
@@ -25,8 +27,7 @@
           >
         </el-col>
       </el-row>
-
-      <!-- 添加用户 -->
+      <!-- 添加用户弹框 -->
       <el-dialog title="添加用户对话框" :visible.sync="dialogFormVisible">
         <el-form :model="form" :rules="rules" label-width ref="form">
           <el-form-item
@@ -59,7 +60,6 @@
           <el-button type="primary" @click="loginFn">确 定</el-button>
         </div>
       </el-dialog>
-
       <!-- 表格 -->
       <el-table :data="tableData" style="width: 100%" stripe border>
         <el-table-column type="index" label="#"></el-table-column>
@@ -120,7 +120,6 @@
           <el-button type="primary" @click="role">确 定</el-button>
         </span>
       </el-dialog>
-
       <!-- 编辑用户 -->
       <el-dialog title="编辑用户" :visible.sync="bianji">
         <el-form :model="form2" :rules="rules2" ref="form2">
@@ -151,7 +150,6 @@
           <el-button type="primary" @click="edit">确 定</el-button>
         </div>
       </el-dialog>
-
       <!-- 页码 -->
       <div class="block">
         <el-pagination
@@ -160,7 +158,8 @@
           @next-click="nextclick"
           :current-page="currentPage"
           :page-sizes="pagesizes"
-          :page-size="100"
+          :page-size="5"
+          @size-change="handleSizeChange"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
         >
@@ -171,10 +170,12 @@
 </template>
 
 <script>
+import { privilege } from '@/api/user'
 import { validateemail, validatemobile } from '@/utils/validate'// 添加用户邮箱校验  手机号验证
 export default {
   created () {
-    this.UserList()
+    this.UserList() // 数据
+    this.privilege() // 权限
   },
   data () {
     // 用户邮箱校验
@@ -199,6 +200,7 @@ export default {
       tableData: [{}],
       total: 0,
       pagesizes: [5, 10, 20],
+      pagesize: 5,
       currentPage: 1,
       gridData: [],
       dialogFormVisible: false, // 添加对话框显示隐藏
@@ -254,7 +256,7 @@ export default {
   methods: {
     async UserList () { // 获取用户列表
       try {
-        await this.$store.dispatch('userlist/UserList', { pagenum: this.currentPage, pagesize: 5 })
+        await this.$store.dispatch('userlist/UserList', { pagenum: this.currentPage, pagesize: this.pagesize })
         // const res = await UserList({ pagenum: this.currentPage, pagesize: 5 })
         this.total = this.$store.getters.usrlist.total // 获取vuex  getters 内变量
         // console.log(this.$store.getters.usrlist.total)
@@ -264,14 +266,19 @@ export default {
         console.log(err)
       }
     },
-    async nextclick () { // 下一页
+    nextclick () { // 下一页
       this.currentPage += 1
     },
-    async prevlick () { // 上一页
+    prevlick () { // 上一页
       this.currentPage -= 1
     },
     handleCurrentChange (val) {
       this.currentPage = val
+      this.UserList()
+    },
+    handleSizeChange (val) {
+      this.pagesize = val
+      this.UserList()
     },
     async loginFn () {
       try {
@@ -283,7 +290,6 @@ export default {
             email: this.form.email,
             mobile: this.form.mobile
           })
-          this.$message.success('创建成功')
           this.dialogFormVisible = false
           this.UserList()
         } catch (error) {
@@ -337,7 +343,7 @@ export default {
       }
     },
     open (id) {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      this.$confirm('删除用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -372,17 +378,22 @@ export default {
       const id = this.tableData.filter(item => item.username === this.nowuser)[0].id
       const rid = this.rolelist.filter(item => item.roleName === this.rolevalue)[0].id
       this.$store.dispatch('userlist/setuser', { id: id, rid: rid })
+    },
+    // 获取菜单权限
+    async privilege () {
+      const res = await privilege()
+      console.log(res)
     }
   },
   computed: {},
   watch: {
-    currentPage: {
-      deep: true,
-      immediate: true,
-      handler () {
-        this.UserList()
-      }
-    }
+    // currentPage: {
+    //   deep: true,
+    //   immediate: true,
+    //   handler () {
+    //     this.UserList()
+    //   }
+    // }
   },
   filters: {},
   components: {}
@@ -395,11 +406,10 @@ export default {
 }
 .formlist {
   width: 100%;
-  height: 456px;
   background-color: #fff;
   overflow: hidden;
   margin: 15px 0;
-  padding: 20px;
+  padding: 40px;
 }
 .el-input {
   margin: 0 30px 20px 0;

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import user from './modules/user'
 import userlist from './modules/userlist'
 import Roles from './modules/Roles'
+import goods from './modules/goods'
 import getters from './gettets'
 import Vuexpersistence from 'vuex-persist'
 const vuexLocal = new Vuexpersistence({
@@ -18,7 +19,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    user, userlist, Roles
+    user, userlist, Roles, goods
   },
   getters,
   plugins: [vuexLocal.plugin]

@@ -87,3 +87,10 @@ export const setuser = ({ id, rid }) => {
     }
   })
 }
+
+// 所有菜单权限
+export const privilege = () => {
+  return request({
+    url: 'menus'
+  })
+}

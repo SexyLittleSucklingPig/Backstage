@@ -7,7 +7,7 @@
         style="width: 80px; height: 55px"
       />
       &nbsp; 登录后台管理系统
-      <el-button class="btn">退出</el-button>
+      <el-button class="btn" @click="logout">退出</el-button>
     </el-header>
     <el-container>
       <!-- <el-aside width="200px"> -->
@@ -17,7 +17,9 @@
         class="el-menu-vertical-demo"
         :collapse="isCollapse"
       >
-        <div @click="isCollapse = !isCollapse" class="daohang">|||</div>
+        <div @click="isCollapse = !isCollapse" class="daohang">
+          <i :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></i>
+        </div>
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-user-solid"></i>
@@ -69,9 +71,39 @@
           <template #title
             ><i class="el-icon-s-goods"></i> <span slot="title">商品管理</span>
           </template>
-          <el-menu-item index="3-1">商品列表</el-menu-item>
-          <el-menu-item index="3-2">分类参数</el-menu-item>
-          <el-menu-item index="3-3">商品分类</el-menu-item>
+          <el-menu-item
+            index="3-1"
+            @click="
+              $router.push(
+                { path: '/goods' },
+                (onComplete) => {},
+                (onAbort) => {}
+              )
+            "
+            >商品列表</el-menu-item
+          >
+          <el-menu-item
+            index="3-2"
+            @click="
+              $router.push(
+                { path: '/params' },
+                (onComplete) => {},
+                (onAbort) => {}
+              )
+            "
+            >分类参数</el-menu-item
+          >
+          <el-menu-item
+            index="3-3"
+            @click="
+              $router.push(
+                { path: '/cateories' },
+                (onComplete) => {},
+                (onAbort) => {}
+              )
+            "
+            >商品分类</el-menu-item
+          >
         </el-submenu>
         <el-submenu index="4">
           <template #title>
@@ -104,6 +136,9 @@ export default {
     }
   },
   methods: {
+    logout () {
+      this.$router.push('/login')
+    }
   },
   computed: {},
   watch: {},
@@ -113,6 +148,9 @@ export default {
 </script>
 
 <style scoped lang='less'>
+html {
+  position: fixed;
+}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
@@ -120,7 +158,7 @@ export default {
 .container {
   height: 100vh;
   .el-header {
-    background-color: #0d043d;
+    background-color: #110238;
     color: #fff;
     font-size: 22px;
     border-bottom: 5px solid rgb(11, 220, 189);
@@ -136,7 +174,8 @@ export default {
     background-color: #ebeaf1;
   }
   .daohang {
-    background-color: #0d043d;
+    background-color: #e6a23c;
+    color: #fff;
     text-align: center;
     line-height: 40px;
     border: none;
