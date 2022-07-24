@@ -14,7 +14,9 @@
           </el-input>
         </el-col>
         <el-col :span="18">
-          <el-button type="primary" @click="$router.push('main/goods/add')">添加商品</el-button>
+          <el-button type="primary" @click="$router.push('main/goods/add')"
+            >添加商品</el-button
+          >
         </el-col>
       </el-row>
       <!-- 表格 -->
@@ -196,7 +198,7 @@ export default {
       // this.form2 = Object.keys(this.form2)
       console.log(this.form2)
       try {
-        const res = await setgoods(this.id, this.form2)
+        const res = await setgoods({ id: this.id, goods_name: this.form2.goods_name, goods_price: this.form2.goods_price, goods_number: this.form2.goods_number, goods_weight: this.form2.goods_weight, goods_introduce: '', pics: [], attrs: [] })
         console.log(res)
       } catch (error) {
         console.log(error)

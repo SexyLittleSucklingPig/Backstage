@@ -31,13 +31,66 @@ export const goodsId = (id) => {
   })
 }
 // 编辑提交
-export const setgoods = (id, form2) => {
+export const setgoods = (data) => {
   return request({
     method: 'PUT',
-    url: `goods/${id}`,
-    data: {
-      id,
-      form2
+    url: `goods/${data.id}`,
+    data
+  })
+}
+
+// 商品分类数据列表
+export const getClassificationlist = () => {
+  return request({
+    method: 'GET',
+    url: 'categories'
+  })
+}
+
+// 商品分类参数(动态)
+export const parameterlist = (id, sel) => {
+  return request({
+    method: 'GET',
+    url: `categories/${id}/attributes`,
+    params: { sel }
+  })
+}
+
+// 添加参数
+export const addaddparameter = (data) => {
+  return request({
+    method: 'POST',
+    url: `categories/${data.id}/attributes`,
+    data
+  })
+}
+
+// 编辑属性
+export const modify = (data) => {
+  return request({
+    method: 'PUT',
+    url: `categories/${data.id}/attributes/${data.attrId}`,
+    data
+  })
+}
+
+// 删除参数
+export const remove = (params) => {
+  return request({
+    method: 'DELETE',
+    url: `categories/${params.id}/attributes/${params.attrid}`,
+    params
+  })
+}
+
+/// /////////////////////////商品分类
+// 获取商品分类列表
+export const classificationgoods = ({ pagenum, pagesize }) => {
+  return request({
+    method: 'GET',
+    url: 'categories',
+    params: {
+      pagenum, pagesize
     }
   })
 }

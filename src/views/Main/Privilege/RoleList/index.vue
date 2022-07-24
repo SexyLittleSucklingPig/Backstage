@@ -36,13 +36,13 @@
                   <el-col :span="8">
                     <el-tag type="success"
                       >{{ item.authName
-                      }}<i class="el-icon-close" @click="delitem(item.id)"></i
+                      }}<i class="el-icon-close" @click="delitem(scope.row.id,item.id)"></i
                     ></el-tag>
                   </el-col>
                   <el-col
                     ><el-tag v-for="item in item.children" :key="item.id"
                       >{{ item.authName
-                      }}<i class="el-icon-close" @click="delitem(item.id)"></i
+                      }}<i class="el-icon-close" @click="delitem(scope.row.id,item.id)"></i
                     ></el-tag>
                   </el-col>
                 </el-col>
@@ -279,6 +279,8 @@ export default {
     },
     // 删除权限
     delitem (id, roleid) {
+      console.log(id)
+      console.log(roleid)
       this.$store.dispatch('Roles/delrolerights', { roleId: id, rightId: roleid })
       this.fromlist()
     }
